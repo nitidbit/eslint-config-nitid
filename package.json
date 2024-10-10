@@ -1,6 +1,6 @@
 {
   "name": "eslint-config-nitid",
-  "version": "3.0.0",
+  "version": "3.0.2",
   "main": ".eslintrc.js",
   "peerDependencies": {
     "@babel/eslint-parser": "^7.25.8",
