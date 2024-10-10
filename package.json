@@ -1,8 +1,7 @@
 {
   "name": "eslint-config-nitid",
-  "version": "2.0.2",
-  "type": "module",
-  "main": "eslint.config.js",
+  "version": "3.0.0",
+  "main": ".eslintrc.js",
   "peerDependencies": {
     "@babel/eslint-parser": "^7.25.8",
     "@typescript-eslint/eslint-plugin": "^8.8.1",
