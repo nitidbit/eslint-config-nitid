@@ -1,6 +1,6 @@
 export default {
   extends: ["airbnb", "prettier"],
-  plugins: [],
+  plugins: ["@typescript-eslint"],
   languageOptions: {
     parser: "@babel/eslint-parser",
     parserOptions: {
@@ -51,7 +51,6 @@ export default {
     "no-underscore-dangle": "off",
     "no-unused-vars": ["error", { argsIgnorePattern: "^_" }],
     "no-useless-escape": "warn",
-    "one-var": ["error", { initialized: "never" }],
     "prefer-destructuring": ["error", { object: true, array: false }],
     "prefer-template": "warn",
     quotes: "warn",
@@ -62,6 +61,7 @@ export default {
       { namedComponents: "arrow-function" },
     ],
     "react/jsx-curly-spacing": "error",
+    "react/jsx-filename-extension": ["error", { extensions: [".jsx", ".tsx"] }],
     "react/jsx-tag-spacing": ["error", { beforeSelfClosing: "always" }],
     "react/forbid-prop-types": "warn",
     "react/jsx-boolean-value": "off",
@@ -70,4 +70,21 @@ export default {
     "react/self-closing-comp": "warn",
     "react/prop-types": "off",
   },
+  overrides: [
+    {
+      files: ["*.ts", "*.tsx"],
+      languageOptions: {
+        parser: "@typescript-eslint/parser",
+      },
+      plugins: ["@typescript-eslint"],
+      extends: [
+        "plugin:@typescript-eslint/eslint-recommended",
+        "plugin:@typescript-eslint/recommended",
+      ],
+      rules: {
+        "@typescript-eslint/no-shadow": "error",
+        "@typescript-eslint/no-unused-vars": "warn",
+      },
+    },
+  ],
 };
