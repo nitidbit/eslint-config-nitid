@@ -1,11 +1,9 @@
 module.exports = {
-  extends: ["airbnb", "prettier", "plugin:@typescript-eslint/recommended"],
+  extends: ["airbnb", "prettier"],
   plugins: ["@typescript-eslint"],
   parser: "@babel/eslint-parser", // Use Babel parser for JavaScript files
   parserOptions: {
     requireConfigFile: false,
-    ecmaVersion: 2022,
-    sourceType: "module",
   },
   env: {
     browser: true,
@@ -73,10 +71,14 @@ module.exports = {
   overrides: [
     {
       files: ["*.ts", "*.tsx"],
-      parser: "@typescript-eslint/parser", // Use TypeScript parser for TypeScript files
+      parser: "@typescript-eslint/parser",
+      extends: ["plugin:@typescript-eslint/recommended"],
       rules: {
         "@typescript-eslint/no-shadow": "error",
-        "@typescript-eslint/no-unused-vars": "warn",
+        "@typescript-eslint/no-unused-vars": [
+          "warn",
+          { argsIgnorePattern: "^_" },
+        ],
       },
     },
   ],
