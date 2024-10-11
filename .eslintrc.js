@@ -73,8 +73,19 @@ module.exports = {
     {
       files: ["*.ts", "*.tsx"],
       parser: "@typescript-eslint/parser",
-      extends: ["plugin:@typescript-eslint/recommended", "airbnb-typescript"],
+      parserOptions: {
+        project: "./tsconfig.json", // Path from your project root
+        tsconfigRootDir: "./", // Points to your project root
+      },
+      extends: [
+        "plugin:@typescript-eslint/recommended",
+        "airbnb-typescript",
+        "prettier", // Prettier config disables conflicting ESLint rules
+        "prettier/@typescript-eslint", // Disables TypeScript-specific formatting rules
+      ],
+      plugins: ["prettier"],
       rules: {
+        "@typescript-eslint/semi": "off", // we don't use semicolons
         "no-shadow": "off",
         "@typescript-eslint/no-shadow": "error",
         "no-unused-vars": "off",
