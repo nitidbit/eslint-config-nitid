@@ -81,18 +81,18 @@ module.exports = {
         "plugin:@typescript-eslint/recommended",
         "airbnb-typescript",
         "prettier", // Prettier config disables conflicting ESLint rules
-        "prettier/@typescript-eslint", // Disables TypeScript-specific formatting rules
       ],
       plugins: ["prettier"],
       rules: {
-        "@typescript-eslint/semi": "off", // we don't use semicolons
-        "no-shadow": "off",
         "@typescript-eslint/no-shadow": "error",
-        "no-unused-vars": "off",
         "@typescript-eslint/no-unused-vars": [
           "warn",
           { argsIgnorePattern: "^_" },
         ],
+        "@typescript-eslint/semi": "off", // we don't use semicolons
+        "no-shadow": "off",
+        "no-unused-vars": "off",
+        "react/require-default-props": "off", // TypeScript handles this
       },
     },
   ],
