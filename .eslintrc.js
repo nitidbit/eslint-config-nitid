@@ -1,6 +1,6 @@
 module.exports = {
   extends: ["airbnb", "prettier"],
-  plugins: ["@typescript-eslint"],
+  plugins: ["@typescript-eslint", "react"],
   parser: "@babel/eslint-parser", // Use Babel parser for JavaScript files
   parserOptions: {
     requireConfigFile: false,
@@ -60,6 +60,7 @@ module.exports = {
     ],
     "react/jsx-curly-spacing": "error",
     "react/jsx-filename-extension": ["error", { extensions: [".jsx", ".tsx"] }],
+    "react/jsx-pascal-case": ["error", { allowAllCaps: true }],
     "react/jsx-tag-spacing": ["error", { beforeSelfClosing: "always" }],
     "react/forbid-prop-types": "warn",
     "react/jsx-boolean-value": "off",
@@ -95,6 +96,36 @@ module.exports = {
           { argsIgnorePattern: "^_" },
         ],
         "@typescript-eslint/semi": "off", // we don't use semicolons
+        "@typescript-eslint/naming-convention": [
+          "error",
+          {
+            selector: "typeAlias",
+            format: ["PascalCase"], // Enforce PascalCase for type aliases
+            trailingUnderscore: "forbid",
+          },
+          {
+            selector: "interface",
+            format: ["PascalCase"], // Enforce PascalCase for interfaces
+          },
+          {
+            selector: "variable",
+            format: ["camelCase", "PascalCase", "UPPER_CASE"], // react components are PascalCase
+            trailingUnderscore: "forbid",
+          },
+          {
+            selector: "function",
+            format: ["camelCase", "PascalCase"], // react components are PascalCase
+            trailingUnderscore: "forbid",
+          },
+          {
+            selector: "enum",
+            format: ["PascalCase"], // Enforce PascalCase for enums
+          },
+          {
+            selector: "enumMember",
+            format: ["UPPER_CASE"], // Enforce UPPER_CASE for enum members
+          },
+        ],
         "no-shadow": "off",
         "no-unused-vars": "off",
         "react/require-default-props": "off", // TypeScript handles this
