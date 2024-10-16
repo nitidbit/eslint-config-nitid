@@ -1,7 +1,7 @@
 module.exports = {
-  extends: ["airbnb", "prettier"],
-  plugins: ["@typescript-eslint"],
-  parser: "@babel/eslint-parser", // Use Babel parser for JavaScript files
+  extends: ['airbnb', 'prettier'],
+  plugins: ['@typescript-eslint'],
+  parser: '@babel/eslint-parser', // Use Babel parser for JavaScript files
   parserOptions: {
     requireConfigFile: false,
   },
@@ -13,86 +13,85 @@ module.exports = {
     jquery: true,
   },
   rules: {
-    "arrow-body-style": "off",
-    "arrow-parens": "error",
-    camelcase: "off",
-    "comma-dangle": [
-      "error",
+    'arrow-body-style': 'off',
+    'arrow-parens': 'error',
+    camelcase: 'off',
+    'comma-dangle': [
+      'error',
       {
-        arrays: "always-multiline",
-        objects: "always-multiline",
-        imports: "always-multiline",
-        exports: "always-multiline",
-        functions: "only-multiline",
+        arrays: 'always-multiline',
+        objects: 'always-multiline',
+        imports: 'always-multiline',
+        exports: 'always-multiline',
+        functions: 'only-multiline',
       },
     ],
-    "dot-notation": "off",
-    "func-names": ["error", "as-needed"],
-    "import/extensions": "off",
-    "import/no-extraneous-dependencies": [
-      "error",
+    'dot-notation': 'off',
+    'func-names': ['error', 'as-needed'],
+    'import/extensions': 'off',
+    'import/no-extraneous-dependencies': [
+      'error',
       { optionalDependencies: false },
     ],
-    "import/prefer-default-export": "off",
-    "jsx-quotes": "warn",
-    "jsx-a11y/click-events-have-key-events": "warn",
-    "jsx-a11y/label-has-associated-control": [
-      "error",
-      { required: { some: ["nesting", "id"] } },
+    'import/prefer-default-export': 'off',
+    'jsx-quotes': 'warn',
+    'jsx-a11y/click-events-have-key-events': 'warn',
+    'jsx-a11y/label-has-associated-control': [
+      'error',
+      { required: { some: ['nesting', 'id'] } },
     ],
-    "jsx-a11y/no-static-element-interactions": "warn",
-    "jsx-a11y/tabindex-no-positive": "warn",
-    "no-console": ["error", { allow: ["warn", "error"] }],
-    "no-restricted-syntax": ["off", "ForOfStatement"],
-    "no-shadow": "error",
-    "no-trailing-spaces": "error",
-    "no-undef": "error",
-    "no-underscore-dangle": "off",
-    "no-unused-vars": ["error", { argsIgnorePattern: "^_" }],
-    "no-useless-escape": "error",
-    "prefer-destructuring": ["error", { object: true, array: false }],
-    "prefer-template": "warn",
-    quotes: "warn",
-    radix: "off",
-    "react/destructuring-assignment": "off",
-    "react/function-component-definition": [
-      "error",
-      { namedComponents: "arrow-function" },
+    'jsx-a11y/no-static-element-interactions': 'warn',
+    'jsx-a11y/tabindex-no-positive': 'warn',
+    'no-console': ['error', { allow: ['warn', 'error'] }],
+    'no-restricted-syntax': ['off', 'ForOfStatement'],
+    'no-shadow': 'error',
+    'no-trailing-spaces': 'error',
+    'no-undef': 'error',
+    'no-underscore-dangle': 'off',
+    'no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
+    'no-useless-escape': 'error',
+    'prefer-destructuring': ['error', { object: true, array: false }],
+    'prefer-template': 'warn',
+    quotes: 'warn',
+    radix: 'off',
+    'react/destructuring-assignment': 'off',
+    'react/function-component-definition': [
+      'error',
+      { namedComponents: 'arrow-function' },
     ],
-    "react/jsx-curly-spacing": "error",
-    "react/jsx-filename-extension": ["error", { extensions: [".jsx", ".tsx"] }],
-    "react/jsx-tag-spacing": ["error", { beforeSelfClosing: "always" }],
-    "react/forbid-prop-types": "warn",
-    "react/jsx-boolean-value": "off",
-    "react/jsx-props-no-spreading": "off",
-    "react/no-unstable-nested-components": ["warn", { allowAsProps: true }],
-    "react/self-closing-comp": "warn",
-    "react/prop-types": "off",
+    'react/jsx-curly-spacing': 'error',
+    'react/jsx-filename-extension': ['error', { extensions: ['.jsx', '.tsx'] }],
+    'react/jsx-tag-spacing': ['error', { beforeSelfClosing: 'always' }],
+    'react/forbid-prop-types': 'warn',
+    'react/jsx-boolean-value': 'off',
+    'react/jsx-props-no-spreading': 'off',
+    'react/no-unstable-nested-components': ['warn', { allowAsProps: true }],
+    'react/self-closing-comp': 'warn',
+    'react/prop-types': 'off',
   },
   overrides: [
     {
-      files: ["*.ts", "*.tsx"],
-      parser: "@typescript-eslint/parser",
+      files: ['*.ts', '*.tsx'],
+      parser: '@typescript-eslint/parser',
       parserOptions: {
-        project: "./tsconfig.json", // Path from your project root
-        tsconfigRootDir: "./", // Points to your project root
+        project: './tsconfig.json', // Path from your project root
+        tsconfigRootDir: './', // Points to your project root
       },
       extends: [
-        "plugin:@typescript-eslint/recommended",
-        "airbnb-typescript",
-        "prettier", // Prettier config disables conflicting ESLint rules
+        'plugin:@typescript-eslint/recommended',
+        'prettier', // Prettier config disables conflicting ESLint rules
       ],
-      plugins: ["prettier"],
+      plugins: ['prettier'],
       rules: {
-        "@typescript-eslint/no-shadow": "error",
-        "@typescript-eslint/no-unused-vars": [
-          "warn",
-          { argsIgnorePattern: "^_" },
+        '@typescript-eslint/no-shadow': 'error',
+        '@typescript-eslint/no-unused-vars': [
+          'warn',
+          { argsIgnorePattern: '^_' },
         ],
-        "@typescript-eslint/semi": "off", // we don't use semicolons
-        "no-shadow": "off",
-        "no-unused-vars": "off",
-        "react/require-default-props": "off", // TypeScript handles this
+        '@typescript-eslint/semi': 'off', // we don't use semicolons
+        'no-shadow': 'off',
+        'no-unused-vars': 'off',
+        'react/require-default-props': 'off', // TypeScript handles this
       },
     },
   ],
