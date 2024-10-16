@@ -68,6 +68,14 @@ module.exports = {
     "react/self-closing-comp": "warn",
     "react/prop-types": "off",
   },
+  settings: {
+    "import/resolver": {
+      typescript: {}, // Enable ESLint to resolve TypeScript files
+      node: {
+        extensions: [".js", ".jsx", ".ts", ".tsx"], // Ensure both JS and TS files are resolved
+      },
+    },
+  },
   overrides: [
     {
       files: ["*.ts", "*.tsx"],
