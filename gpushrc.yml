@@ -1,0 +1,14 @@
+# Configuration for gPush -- https://github.com/nitidbit/gpush
+
+pre_run:
+  - shell: curl 'https://raw.githubusercontent.com/nitidbit/gpush/main/.prettierrc.json' -O
+
+parallel_run:
+  - name: prettier
+    shell: npx prettier --check --ignore-unknown ./*
+
+  - name: Uncommitted git changes
+    shell: git diff --exit-code --name-only
+
+  - name: eslint
+    shell: npx eslint '**/*.{js,jsx,ts,tsx}'
