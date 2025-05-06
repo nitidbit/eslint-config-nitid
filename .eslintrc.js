@@ -65,7 +65,6 @@ module.exports = {
     'react/jsx-pascal-case': ['error', { allowAllCaps: true }],
     'react/jsx-props-no-spreading': 'off',
     'react/jsx-tag-spacing': ['error', { beforeSelfClosing: 'always' }],
-    'react/no-unescaped-entities': 'off',
     'react/no-unstable-nested-components': ['warn', { allowAsProps: true }],
     'react/prop-types': 'off',
     'react/self-closing-comp': 'warn',
