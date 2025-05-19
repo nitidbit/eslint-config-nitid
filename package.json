@@ -1,7 +1,12 @@
 {
-  "name": "eslint-config-nitid",
+  "name": "@nitid/eslint-config-nitid",
   "version": "3.7.1",
+  "description": "Shareable ESLint config used by Nitid Bit",
   "main": ".eslintrc.js",
+  "type": "commonjs",
+  "files": [
+    ".eslintrc.js"
+  ],
   "publishConfig": {
     "access": "public"
   },
