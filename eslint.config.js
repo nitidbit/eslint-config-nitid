@@ -6,17 +6,9 @@ import importPlugin from 'eslint-plugin-import';
 import jsxA11yPlugin from 'eslint-plugin-jsx-a11y';
 import hooksPlugin from 'eslint-plugin-react-hooks';
 import js from '@eslint/js';
-import globals from 'globals';
 
-// Base language options for all JavaScript and TypeScript files
+// Base language options without globals - projects should define their own environments
 const baseLanguageOptions = {
-  globals: {
-    ...globals.browser,
-    ...globals.node,
-    ...globals.es2021,
-    ...globals.jest,
-    ...globals.jquery,
-  },
   ecmaVersion: 2021,
   sourceType: 'module',
 };
@@ -49,6 +41,7 @@ const baseRules = {
   'for-direction': 'error',
   'func-names': ['error', 'as-needed'],
   'getter-return': 'error',
+  'global-require': 'error',
   'max-classes-per-file': ['error', 1],
   'no-alert': 'error',
   'no-async-promise-executor': 'error',
@@ -80,7 +73,7 @@ const baseRules = {
   'no-fallthrough': 'error',
   'no-floating-decimal': 'error',
   'no-func-assign': 'error',
-  'no-implicit-coercion': 'error',
+  'no-implicit-coercion': ['error', { allow: ['!!'] }],
   'no-implied-eval': 'error',
   'no-import-assign': 'error',
   'no-invalid-regexp': 'error',
@@ -173,7 +166,7 @@ const baseRules = {
   'object-curly-spacing': ['error', 'always'],
   'padded-blocks': ['error', 'never'],
   'quotes': ['error', 'single', { avoidEscape: true }],
-  'semi': ['error', 'always'],
+  'semi': 'off',
   'semi-spacing': ['error', { before: false, after: true }],
   'space-before-blocks': 'error',
   'space-before-function-paren': ['error', { anonymous: 'always', named: 'never', asyncArrow: 'always' }],
@@ -318,30 +311,30 @@ const typescriptRules = {
     'error',
     {
       selector: 'typeAlias',
-      format: ['PascalCase'], // Enforce PascalCase for type aliases
+      format: ['PascalCase'],
       trailingUnderscore: 'forbid',
     },
     {
       selector: 'interface',
-      format: ['PascalCase'], // Enforce PascalCase for interfaces
+      format: ['PascalCase'],
     },
     {
       selector: 'variable',
-      format: ['camelCase', 'PascalCase', 'UPPER_CASE'], // react components are PascalCase
+      format: ['camelCase', 'PascalCase', 'UPPER_CASE'],
       trailingUnderscore: 'forbid',
     },
     {
       selector: 'function',
-      format: ['camelCase', 'PascalCase'], // react components are PascalCase
+      format: ['camelCase', 'PascalCase'],
       trailingUnderscore: 'forbid',
     },
     {
       selector: 'enum',
-      format: ['PascalCase'], // Enforce PascalCase for enums
+      format: ['PascalCase'],
     },
     {
       selector: 'enumMember',
-      format: ['UPPER_CASE'], // Enforce UPPER_CASE for enum members
+      format: ['UPPER_CASE'],
     },
   ],
   '@typescript-eslint/no-array-constructor': 'error',
@@ -368,15 +361,38 @@ const typescriptRules = {
     },
   ],
   '@typescript-eslint/no-use-before-define': ['error', { functions: false, classes: true, variables: true }],
+  '@typescript-eslint/no-var-requires': 'error',
   '@typescript-eslint/no-wrapper-object-types': 'error',
   '@typescript-eslint/prefer-as-const': 'error',
   '@typescript-eslint/prefer-namespace-keyword': 'error',
   '@typescript-eslint/semi': 'off',
   '@typescript-eslint/triple-slash-reference': 'error',
+  // Turn off base rules that are handled by TypeScript-specific rules
   'no-shadow': 'off',
   'no-unused-vars': 'off',
   'no-use-before-define': 'off',
   'react/require-default-props': 'off', // TypeScript handles this
+};
+
+/**
+ * Environment presets that can be used in consuming projects.
+ * Projects should include these directly in their ESLint configuration.
+ *
+ * Available environments:
+ * - browser: Browser globals
+ * - node: Node.js globals
+ * - es2021: ES2021 globals
+ * - jest: Jest testing globals
+ * - jquery: jQuery globals
+ *
+ * See README.md for usage examples.
+ */
+export const environments = {
+  browser: { browser: true },
+  node: { node: true },
+  es2021: { es2021: true },
+  jest: { jest: true },
+  jquery: { jquery: true },
 };
 
 export default [

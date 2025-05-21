@@ -1,6 +1,6 @@
 {
   "name": "@nitid/eslint-config-nitid",
-  "version": "4.0.1",
+  "version": "4.0.3",
   "description": "Shareable ESLint config used by Nitid Bit",
   "main": "eslint.config.js",
   "type": "module",
@@ -12,19 +12,27 @@
   },
   "peerDependencies": {
     "@babel/eslint-parser": "^7.25.8",
+    "@eslint/js": "^9.0.0",
     "@typescript-eslint/eslint-plugin": "^8.9.0",
     "@typescript-eslint/parser": "^8.9.0",
     "eslint": "^9.0.0",
+    "eslint-import-resolver-typescript": "^3.6.3",
     "eslint-plugin-import": "^2.27.5",
     "eslint-plugin-jsx-a11y": "^6.7.1",
     "eslint-plugin-react": "^7.37.1",
-    "eslint-plugin-react-hooks": "^5.2.0",
-    "eslint-import-resolver-typescript": "^3.6.3"
+    "eslint-plugin-react-hooks": "^5.2.0"
   },
   "devDependencies": {
+    "@babel/eslint-parser": "^7.27.1",
     "@eslint/js": "^9.0.0",
+    "@typescript-eslint/eslint-plugin": "^8.32.1",
+    "@typescript-eslint/parser": "^8.32.1",
     "eslint": "^9.0.0",
-    "globals": "^14.0.0",
+    "eslint-import-resolver-typescript": "^4.3.5",
+    "eslint-plugin-import": "^2.31.0",
+    "eslint-plugin-jsx-a11y": "^6.10.2",
+    "eslint-plugin-react": "^7.37.5",
+    "eslint-plugin-react-hooks": "^5.2.0",
     "prettier": "^3.3.3"
   }
 }
