@@ -6,11 +6,19 @@ import importPlugin from 'eslint-plugin-import';
 import jsxA11yPlugin from 'eslint-plugin-jsx-a11y';
 import hooksPlugin from 'eslint-plugin-react-hooks';
 import js from '@eslint/js';
+import prettierConfig from 'eslint-config-prettier';
 
 // Base language options without globals - projects should define their own environments
 const baseLanguageOptions = {
   ecmaVersion: 2021,
   sourceType: 'module',
+  globals: {
+    // Add minimal globals that are almost always needed
+    console: 'readonly',
+    process: 'readonly',
+    module: 'readonly',
+    require: 'readonly',
+  },
 };
 
 // Base rules for all JavaScript and TypeScript files
@@ -472,4 +480,7 @@ export default [
       },
     },
   },
+
+  // Prettier configuration - must be last to override other configs
+  prettierConfig,
 ];
