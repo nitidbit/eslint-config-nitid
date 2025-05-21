@@ -4,23 +4,16 @@
  * This is for demonstration only and not part of the actual package.
  */
 
-import nitidConfigFunction from './eslint.config.js'
-
-// Define the environments that would be available in a real project
-const environments = {
-  browser: { browser: true },
-  node: { node: true },
-  jest: { jest: true },
-}
+import nitidConfigFunction, { environments } from './eslint.config.js'
 
 // Use top-level await to resolve the async config function
 const nitidConfig = await nitidConfigFunction()
 
 export default [
   ...nitidConfig,
-  // Application code globals
+  // Application code globals for browser and node environments
   {
-    files: ['**/*.js', '**/*.jsx', '**/*.ts', '**/*.tsx'],
+    files: ['**/*.{js,jsx,ts,tsx}'],
     languageOptions: {
       globals: {
         ...environments.browser,
@@ -28,9 +21,9 @@ export default [
       },
     },
   },
-  // Test files globals
+  // Test file globals
   {
-    files: ['**/*.test.js', '**/*.test.ts', '**/*.spec.js', '**/*.spec.ts'],
+    files: ['**/*.{test,spec}.{js,ts,jsx,tsx}'],
     languageOptions: {
       globals: {
         ...environments.jest,

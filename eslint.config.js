@@ -1,15 +1,24 @@
 // eslint.config.js
 // Use dynamic imports for better compatibility as a shareable config
-export default async function () {
+export default async function createConfig() {
   // Dynamically import dependencies
+  // eslint-disable-next-line import/no-unresolved
   const jsParser = await import('@babel/eslint-parser')
+  // eslint-disable-next-line import/no-unresolved
   const tsParser = await import('@typescript-eslint/parser')
+  // eslint-disable-next-line import/no-unresolved
   const typescriptPlugin = await import('@typescript-eslint/eslint-plugin')
+  // eslint-disable-next-line import/no-unresolved
   const reactPlugin = await import('eslint-plugin-react')
+  // eslint-disable-next-line import/no-unresolved
   const importPlugin = await import('eslint-plugin-import')
+  // eslint-disable-next-line import/no-unresolved
   const jsxA11yPlugin = await import('eslint-plugin-jsx-a11y')
+  // eslint-disable-next-line import/no-unresolved
   const hooksPlugin = await import('eslint-plugin-react-hooks')
+  // eslint-disable-next-line import/no-unresolved
   const js = await import('@eslint/js')
+  // eslint-disable-next-line import/no-unresolved
   const prettierConfig = await import('eslint-config-prettier')
 
   // Base language options without globals - projects should define their own environments
@@ -423,27 +432,6 @@ export default async function () {
     'react/require-default-props': 'off', // TypeScript handles this
   }
 
-  /**
-   * Environment presets that can be used in consuming projects.
-   * Projects should include these directly in their ESLint configuration.
-   *
-   * Available environments:
-   * - browser: Browser globals
-   * - node: Node.js globals
-   * - es2021: ES2021 globals
-   * - jest: Jest testing globals
-   * - jquery: jQuery globals
-   *
-   * See README.md for usage examples.
-   */
-  const environments = {
-    browser: { browser: true },
-    node: { node: true },
-    es2021: { es2021: true },
-    jest: { jest: true },
-    jquery: { jquery: true },
-  }
-
   return [
     // Ignore patterns
     {
@@ -525,4 +513,26 @@ export default async function () {
     // Prettier configuration - must be last to override other configs
     prettierConfig.default,
   ]
+}
+
+/**
+ * Environment presets that can be used in consuming projects.
+ * Projects should include these directly in their ESLint configuration.
+ *
+ * Available environments:
+ * - browser: Browser globals
+ * - node: Node.js globals
+ * - es2021: ES2021 globals
+ * - jest: Jest testing globals
+ * - jquery: jQuery globals
+ *
+ * See README.md for usage examples.
+ */
+
+export const environments = {
+  browser: { browser: true },
+  node: { node: true },
+  es2021: { es2021: true },
+  jest: { jest: true },
+  jquery: { jquery: true },
 }

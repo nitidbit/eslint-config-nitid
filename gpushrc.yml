@@ -11,4 +11,4 @@ parallel_run:
     shell: git diff --exit-code --name-only
 
   - name: eslint
-    shell: npx eslint '**/*.{js,jsx,ts,tsx}'
+    shell: npx eslint --config test-config.js '**/*.{js,jsx,ts,tsx}'
