@@ -1,6 +1,6 @@
 {
   "name": "@nitid/eslint-config-nitid",
-  "version": "3.7.1",
+  "version": "4.0.1",
   "description": "Shareable ESLint config used by Nitid Bit",
   "main": "eslint.config.js",
   "type": "module",
@@ -18,7 +18,7 @@
     "eslint-plugin-import": "^2.27.5",
     "eslint-plugin-jsx-a11y": "^6.7.1",
     "eslint-plugin-react": "^7.37.1",
-    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-import-resolver-typescript": "^3.6.3"
   },
   "devDependencies": {

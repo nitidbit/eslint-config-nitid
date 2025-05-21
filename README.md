@@ -29,11 +29,13 @@ export default [
 ## Features
 
 - Self-contained rule set (no airbnb or other config dependencies)
-- TypeScript support
+- Comprehensive TypeScript support with strict type checking rules
 - React and React Hooks support
 - JSX accessibility rules
 - Separate configurations for JS/JSX and TS/TSX files
 - Modern JavaScript best practices
+- Complete set of import/export rules
+- Includes all rules from previous ESLint 8 configurations
 
 ## Migration from ESLint 8
 
