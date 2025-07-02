@@ -295,7 +295,7 @@ export default async function createConfig() {
     'jsx-a11y/tabindex-no-positive': 'warn',
 
     // React
-    'react-hooks/exhaustive-deps': 'warn',
+    'react-hooks/exhaustive-deps': 'off',
     'react-hooks/rules-of-hooks': 'error',
     'react/button-has-type': 'error',
     'react/default-props-match-prop-types': [
@@ -322,7 +322,8 @@ export default async function createConfig() {
     'react/jsx-no-undef': 'error',
     'react/jsx-no-useless-fragment': 'error',
     'react/jsx-pascal-case': ['error', { allowAllCaps: true }],
-    'react/jsx-props-no-spreading': 'error',
+    'react/jsx-props-no-spread-multi': 'error',
+    'react/jsx-props-no-spreading': 'off',
     'react/jsx-tag-spacing': ['error', { beforeSelfClosing: 'always' }],
     'react/jsx-uses-react': 'error',
     'react/jsx-uses-vars': 'error',
