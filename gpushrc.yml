@@ -1,8 +1,5 @@
 # Configuration for gPush -- https://github.com/nitidbit/gpush
 
-pre_run:
-  - shell: curl 'https://raw.githubusercontent.com/nitidbit/gpush/main/.prettierrc.json' -O
-
 parallel_run:
   - name: prettier
     shell: npx prettier --check --ignore-unknown ./*
