@@ -5,7 +5,7 @@ parallel_run:
     shell: npx prettier --check --ignore-unknown ./*
 
   - name: Uncommitted git changes
-    shell: git diff --exit-code --name-only
+    shell: git status && test -z "$(git status --porcelain)"
 
   - name: eslint
     shell: npx eslint --config test-config.js '**/*.{js,jsx,ts,tsx}'
