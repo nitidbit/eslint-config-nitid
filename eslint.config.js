@@ -2,27 +2,18 @@
 // Use dynamic imports for better compatibility as a shareable config
 export default async function createConfig() {
   // Dynamically import dependencies
-  // eslint-disable-next-line import/no-unresolved
   const jsParser = await import('@babel/eslint-parser')
   // eslint-disable-next-line import/no-unresolved
   const tsParser = await import('@typescript-eslint/parser')
   // eslint-disable-next-line import/no-unresolved
   const typescriptPlugin = await import('@typescript-eslint/eslint-plugin')
-  // eslint-disable-next-line import/no-unresolved
   const reactPlugin = await import('eslint-plugin-react')
-  // eslint-disable-next-line import/no-unresolved
   const importPlugin = await import('eslint-plugin-import')
-  // eslint-disable-next-line import/no-unresolved
   const jsxA11yPlugin = await import('eslint-plugin-jsx-a11y')
-  // eslint-disable-next-line import/no-unresolved
   const hooksPlugin = await import('eslint-plugin-react-hooks')
-  // eslint-disable-next-line import/no-unresolved
   const js = await import('@eslint/js')
-  // eslint-disable-next-line import/no-unresolved
   const prettierConfig = await import('eslint-config-prettier')
-  // eslint-disable-next-line import/no-unresolved
   const fs = await import('fs')
-  // eslint-disable-next-line import/no-unresolved
   const path = await import('path')
 
   // Base language options without globals - projects should define their own environments
@@ -261,42 +252,10 @@ export default async function createConfig() {
     ],
     'import/prefer-default-export': 'off',
 
-    // JSX-A11Y
-    'jsx-a11y/alt-text': 'error',
-    'jsx-a11y/anchor-has-content': 'error',
-    'jsx-a11y/anchor-is-valid': 'error',
-    'jsx-a11y/aria-activedescendant-has-tabindex': 'error',
-    'jsx-a11y/aria-props': 'error',
-    'jsx-a11y/aria-proptypes': 'error',
-    'jsx-a11y/aria-role': 'error',
-    'jsx-a11y/aria-unsupported-elements': 'error',
-    'jsx-a11y/click-events-have-key-events': 'warn',
-    'jsx-a11y/heading-has-content': 'error',
-    'jsx-a11y/html-has-lang': 'error',
-    'jsx-a11y/img-redundant-alt': 'error',
-    'jsx-a11y/interactive-supports-focus': 'error',
-    'jsx-a11y/label-has-associated-control': [
-      'error',
-      { required: { some: ['nesting', 'id'] } },
-    ],
-    'jsx-a11y/mouse-events-have-key-events': 'error',
-    'jsx-a11y/no-access-key': 'error',
-    'jsx-a11y/no-autofocus': 'error',
-    'jsx-a11y/no-distracting-elements': 'error',
-    'jsx-a11y/no-interactive-element-to-noninteractive-role': 'error',
-    'jsx-a11y/no-noninteractive-element-interactions': 'error',
-    'jsx-a11y/no-noninteractive-element-to-interactive-role': 'error',
-    'jsx-a11y/no-noninteractive-tabindex': 'error',
-    'jsx-a11y/no-redundant-roles': 'error',
-    'jsx-a11y/no-static-element-interactions': 'warn',
-    'jsx-a11y/role-has-required-aria-props': 'error',
-    'jsx-a11y/role-supports-aria-props': 'error',
-    'jsx-a11y/scope': 'error',
-    'jsx-a11y/tabindex-no-positive': 'warn',
-
     // React
     'react-hooks/exhaustive-deps': 'off',
     'react-hooks/rules-of-hooks': 'error',
+
     'react/button-has-type': 'error',
     'react/default-props-match-prop-types': [
       'error',
@@ -462,6 +421,11 @@ export default async function createConfig() {
   }
 
   return [
+    jsxA11yPlugin.default.flatConfigs.recommended,
+    reactPlugin.default.configs.flat.recommended,
+    reactPlugin.default.configs.flat['jsx-runtime'],
+    hooksPlugin.configs['recommended-latest'],
+
     // Ignore patterns
     {
       ignores: ['node_modules/', 'dist/', 'build/', 'coverage/'],
@@ -475,9 +439,6 @@ export default async function createConfig() {
       files: ['**/*.js', '**/*.jsx'],
       plugins: {
         import: importPlugin.default,
-        'jsx-a11y': jsxA11yPlugin.default,
-        react: reactPlugin.default,
-        'react-hooks': hooksPlugin.default,
       },
       languageOptions: {
         ...baseLanguageOptions,
@@ -510,9 +471,7 @@ export default async function createConfig() {
       plugins: {
         '@typescript-eslint': typescriptPlugin.default,
         import: importPlugin.default,
-        'jsx-a11y': jsxA11yPlugin.default,
         react: reactPlugin.default,
-        'react-hooks': hooksPlugin.default,
       },
       languageOptions: {
         ...baseLanguageOptions,
