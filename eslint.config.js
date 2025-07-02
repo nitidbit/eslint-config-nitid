@@ -20,6 +20,10 @@ export default async function createConfig() {
   const js = await import('@eslint/js')
   // eslint-disable-next-line import/no-unresolved
   const prettierConfig = await import('eslint-config-prettier')
+  // eslint-disable-next-line import/no-unresolved
+  const fs = await import('fs')
+  // eslint-disable-next-line import/no-unresolved
+  const path = await import('path')
 
   // Base language options without globals - projects should define their own environments
   const baseLanguageOptions = {
@@ -430,6 +434,30 @@ export default async function createConfig() {
     'no-unused-vars': 'off',
     'no-use-before-define': 'off',
     'react/require-default-props': 'off', // TypeScript handles this
+  }
+
+  // Check for tsconfig.json before creating TypeScript config
+  const tsConfigPath = path.default.join(process.cwd(), 'tsconfig.json')
+  if (!fs.default.existsSync(tsConfigPath)) {
+    throw new Error(
+      `@nitid/eslint-config-nitid requires a tsconfig.json file in your project root for TypeScript support.\n\n` +
+        `Please create a tsconfig.json file with at least:\n` +
+        `{\n` +
+        `  "compilerOptions": {\n` +
+        `    "target": "ES2021",\n` +
+        `    "module": "ESNext",\n` +
+        `    "moduleResolution": "node",\n` +
+        `    "strict": true,\n` +
+        `    "jsx": "react-jsx",\n` +
+        `    "esModuleInterop": true,\n` +
+        `    "skipLibCheck": true,\n` +
+        `    "forceConsistentCasingInFileNames": true\n` +
+        `  },\n` +
+        `  "include": ["**/*.ts", "**/*.tsx"],\n` +
+        `  "exclude": ["node_modules"]\n` +
+        `}\n\n` +
+        `See https://github.com/nitid/eslint-config-nitid for more details.`
+    )
   }
 
   return [

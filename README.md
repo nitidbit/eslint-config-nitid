@@ -6,6 +6,7 @@ Shared ESLint config for Nitid Bit projects, updated for ESLint 9.
 
 - Node.js ≥ 18.18.0 (ESLint 9 requirement)
 - ESLint 9.x
+- TypeScript projects: `tsconfig.json` file in project root (for full type checking)
 
 ## Installation
 
@@ -84,6 +85,27 @@ export default [
 - Includes all rules from previous ESLint 8 configurations
 - No default globals (projects define their own environment needs)
 - Prettier integration to avoid formatting conflicts
+
+## TypeScript Configuration
+
+This config requires a `tsconfig.json` file in your project root for TypeScript files. If you don't have one, create a minimal `tsconfig.json`:
+
+```json
+{
+  "compilerOptions": {
+    "target": "ES2021",
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "strict": true,
+    "jsx": "react-jsx",
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true
+  },
+  "include": ["**/*.ts", "**/*.tsx"],
+  "exclude": ["node_modules"]
+}
+```
 
 ## Migration from ESLint 8
 
