@@ -144,6 +144,7 @@ export default async function createConfig() {
     'no-sparse-arrays': 'error',
     'no-template-curly-in-string': 'error',
     'no-this-before-super': 'error',
+    'no-unassigned-vars': 'error',
     'no-throw-literal': 'error',
     'no-trailing-spaces': 'error',
     'no-undef': 'error',
@@ -159,6 +160,7 @@ export default async function createConfig() {
     'no-unused-expressions': 'error',
     'no-unused-private-class-members': 'error',
     'no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
+    'no-useless-assignment': 'error',
     'no-use-before-define': [
       'error',
       { functions: false, classes: true, variables: true },
