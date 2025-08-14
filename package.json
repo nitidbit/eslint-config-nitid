@@ -10,12 +10,14 @@
   "publishConfig": {
     "access": "public"
   },
+  "peerDependencies": {
+    "eslint": "^9.33.0"
+  },
   "dependencies": {
     "@babel/eslint-parser": "^7.28",
     "@eslint/js": "^9.30",
     "@typescript-eslint/eslint-plugin": "^8.35",
     "@typescript-eslint/parser": "^8.35",
-    "eslint": "^9",
     "eslint-config-prettier": "^10.1",
     "eslint-import-resolver-typescript": "^4.4",
     "eslint-plugin-import": "^2.32",
@@ -24,6 +26,7 @@
     "eslint-plugin-react-hooks": "^5.2"
   },
   "devDependencies": {
+    "eslint": "^9.33.0",
     "prettier": "^3.6.2",
     "react": "^19.1.0"
   }
