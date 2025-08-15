@@ -47,7 +47,7 @@ export default async function createConfig() {
         functions: 'only-multiline',
       },
     ],
-    complexity: ['error', { max: 20 }],
+    complexity: ['warn', { variant: 'modified', max: 24 }],
     'consistent-return': 'error',
     'constructor-super': 'error',
     'default-case': 'error',
@@ -503,26 +503,4 @@ export default async function createConfig() {
     // Prettier configuration - must be last to override other configs
     prettierConfig.default,
   ]
-}
-
-/**
- * Environment presets that can be used in consuming projects.
- * Projects should include these directly in their ESLint configuration.
- *
- * Available environments:
- * - browser: Browser globals
- * - node: Node.js globals
- * - es2021: ES2021 globals
- * - jest: Jest testing globals
- * - jquery: jQuery globals
- *
- * See README.md for usage examples.
- */
-
-export const environments = {
-  browser: { browser: true },
-  node: { node: true },
-  es2021: { es2021: true },
-  jest: { jest: true },
-  jquery: { jquery: true },
 }
