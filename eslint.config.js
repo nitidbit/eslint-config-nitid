@@ -501,7 +501,7 @@ export default async function createConfig() {
     },
 
     {
-      files: ['**/*.test.ts', '**/*.test.tsx'],
+      files: ['**/*.test.ts', '**/*.test.tsx', '**/*.test.js', '**/*.test.jsx'],
       languageOptions: {
         globals: {
           describe: 'readonly',
