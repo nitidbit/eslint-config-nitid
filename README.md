@@ -32,19 +32,12 @@ export default [
 ];
 ```
 
-### Configuring Environments (Globals)
+### Configuring Globals
 
-This config includes minimal globals by default (console, process, module, require). Your project should define any additional environments it needs:
+This config includes minimal globals by default (console, process, module, require). Your project should define any additional globals it needs:
 
 ```js
 import nitidConfigFunction from "@nitid/eslint-config-nitid";
-
-// Define your environment globals
-const environments = {
-  browser: { browser: true },
-  node: { node: true },
-  jest: { jest: true },
-};
 
 // Use top-level await to resolve the async config function
 const nitidConfig = await nitidConfigFunction();
@@ -56,8 +49,14 @@ export default [
     files: ["**/*.js", "**/*.jsx", "**/*.ts", "**/*.tsx"],
     languageOptions: {
       globals: {
-        ...environments.browser,
-        ...environments.node,
+        // Browser globals
+        window: "readonly",
+        document: "readonly",
+        console: "readonly",
+        // Node.js globals
+        process: "readonly",
+        global: "readonly",
+        Buffer: "readonly",
       },
     },
   },
@@ -66,7 +65,15 @@ export default [
     files: ["**/*.test.js", "**/*.test.ts", "**/*.spec.js", "**/*.spec.ts"],
     languageOptions: {
       globals: {
-        ...environments.jest,
+        // Jest globals
+        describe: "readonly",
+        test: "readonly",
+        it: "readonly",
+        expect: "readonly",
+        beforeEach: "readonly",
+        afterEach: "readonly",
+        beforeAll: "readonly",
+        afterAll: "readonly",
       },
     },
   },

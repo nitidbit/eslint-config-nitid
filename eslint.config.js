@@ -275,7 +275,7 @@ export default async function createConfig() {
     'react/jsx-filename-extension': ['error', { extensions: ['.jsx', '.tsx'] }],
     'react/jsx-fragments': ['error', 'syntax'],
     'react/jsx-key': 'error',
-    'react/jsx-no-bind': ['error', { allowArrowFunctions: true }],
+    'react/jsx-no-bind': ['warn', { allowArrowFunctions: true }],
     'react/jsx-no-comment-textnodes': 'error',
     'react/jsx-no-duplicate-props': 'error',
     'react/jsx-no-script-url': 'error',
@@ -497,6 +497,36 @@ export default async function createConfig() {
         react: {
           version: 'detect',
         },
+      },
+    },
+
+    {
+      files: ['**/*.test.ts', '**/*.test.tsx'],
+      languageOptions: {
+        globals: {
+          describe: 'readonly',
+          test: 'readonly',
+          it: 'readonly',
+          expect: 'readonly',
+          beforeEach: 'readonly',
+          afterEach: 'readonly',
+          beforeAll: 'readonly',
+          afterAll: 'readonly',
+          jest: 'readonly',
+          fail: 'readonly',
+          pending: 'readonly',
+          spyOn: 'readonly',
+          xdescribe: 'readonly',
+          xtest: 'readonly',
+          xit: 'readonly',
+          fdescribe: 'readonly',
+          fit: 'readonly',
+        },
+      },
+      rules: {
+        'no-empty-function': 'off',
+        'import/no-named-as-default-member': 'off',
+        'filenames/match-exported-or-regex': 'off',
       },
     },
 
