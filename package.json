@@ -1,6 +1,6 @@
 {
   "name": "@nitid/eslint-config-nitid",
-  "version": "4.2.3",
+  "version": "4.2.4",
   "description": "Shareable ESLint config used by Nitid Bit",
   "main": "eslint.config.js",
   "type": "module",

@@ -161,10 +161,6 @@ export default async function createConfig() {
     'no-unused-private-class-members': 'error',
     'no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
     'no-useless-assignment': 'error',
-    'no-use-before-define': [
-      'error',
-      { functions: false, classes: true, variables: true },
-    ],
     'no-useless-backreference': 'error',
     'no-useless-call': 'error',
     'no-useless-catch': 'error',
@@ -383,7 +379,7 @@ export default async function createConfig() {
     ],
     '@typescript-eslint/no-use-before-define': [
       'error',
-      { functions: false, classes: true, variables: true },
+      { functions: false, classes: true, variables: false, typedefs: false },
     ],
     '@typescript-eslint/no-var-requires': 'error',
     '@typescript-eslint/no-wrapper-object-types': 'error',
