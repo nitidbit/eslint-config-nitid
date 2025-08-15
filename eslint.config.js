@@ -523,6 +523,7 @@ export default async function createConfig() {
         'no-empty-function': 'off',
         'import/no-named-as-default-member': 'off',
         'filenames/match-exported-or-regex': 'off',
+        'react-hooks/rules-of-hooks': 'off',
       },
     },
 
