@@ -356,6 +356,7 @@ export default async function createConfig() {
     '@typescript-eslint/no-array-constructor': 'error',
     '@typescript-eslint/no-duplicate-enum-values': 'error',
     '@typescript-eslint/no-empty-object-type': 'error',
+    '@typescript-eslint/no-redeclare': 'error',
     '@typescript-eslint/no-explicit-any': 'error',
     '@typescript-eslint/no-extra-non-null-assertion': 'error',
     '@typescript-eslint/no-misused-new': 'error',
@@ -387,6 +388,7 @@ export default async function createConfig() {
     '@typescript-eslint/semi': 'off',
     '@typescript-eslint/triple-slash-reference': 'error',
     // Turn off base rules that are handled by TypeScript-specific rules
+    'no-redeclare': 'off', // Use @typescript-eslint/no-redeclare instead
     'no-shadow': 'off',
     'no-unused-vars': 'off',
     'no-use-before-define': 'off',
