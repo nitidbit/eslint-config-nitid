@@ -18,7 +18,7 @@ export default async function createConfig() {
   // NOT a hard dependency: npm `overrides` declared here would be ignored in
   // consumer installs. Consumers who want a11y linting install it themselves
   // (see README), where their own overrides do apply.
-  let jsxA11yPlugin = null
+  let jsxA11yPlugin
   try {
     jsxA11yPlugin = await import('eslint-plugin-jsx-a11y')
   } catch {
@@ -27,7 +27,11 @@ export default async function createConfig() {
 
   // Base language options without globals - projects should define their own environments
   const baseLanguageOptions = {
-    ecmaVersion: 2021,
+    // 'latest', not a pinned year: @babel/eslint-parser used to parse any
+    // modern syntax regardless of this setting. espree honours it, so pinning
+    // to 2021 would newly reject top-level await (which our own README tells
+    // consumers to use), class static blocks, and anything else post-ES2021.
+    ecmaVersion: 'latest',
     sourceType: 'module',
     globals: {
       // Add minimal globals that are almost always needed
