@@ -281,7 +281,10 @@ export default async function createConfig() {
     'react/jsx-props-no-spread-multi': 'error',
     'react/jsx-props-no-spreading': 'off',
     'react/jsx-tag-spacing': ['error', { beforeSelfClosing: 'always' }],
-    'react/jsx-uses-react': 'error',
+    // 'react/jsx-uses-react' and 'react/react-in-jsx-scope' are intentionally
+    // omitted: configs.flat['jsx-runtime'] disables them for the automatic JSX
+    // transform (React 17+). Setting them here would override that, because
+    // these baseRules are applied in later config objects.
     'react/jsx-uses-vars': 'error',
     'react/no-access-state-in-setstate': 'error',
     'react/no-array-index-key': 'error',
@@ -311,7 +314,6 @@ export default async function createConfig() {
     'react/prefer-exact-props': 'error',
     'react/prefer-stateless-function': 'error',
     'react/prop-types': 'off',
-    'react/react-in-jsx-scope': 'error',
     'react/require-render-return': 'error',
     'react/self-closing-comp': 'warn',
     'react/sort-comp': 'error',
@@ -477,7 +479,8 @@ export default async function createConfig() {
         parser: tsParser.default,
         parserOptions: {
           project: './tsconfig.json',
-          tsconfigRootDir: './',
+          // Must be absolute: typescript-eslint rejects relative paths.
+          tsconfigRootDir: process.cwd(),
         },
       },
       rules: {
@@ -523,7 +526,6 @@ export default async function createConfig() {
       rules: {
         'no-empty-function': 'off',
         'import/no-named-as-default-member': 'off',
-        'filenames/match-exported-or-regex': 'off',
         'react-hooks/rules-of-hooks': 'off',
       },
     },
