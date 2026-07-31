@@ -1,22 +1,50 @@
 # eslint-config-nitid
 
-Shared ESLint config for Nitid Bit projects, updated for ESLint 9.
+Shared ESLint config for Nitid Bit projects, updated for ESLint 10.
 
 ## Requirements
 
-- Node.js ≥ 18.18.0 (ESLint 9 requirement)
-- ESLint 9.x
-- TypeScript projects: `tsconfig.json` file in project root (for full type checking)
+- Node.js ≥ 22.0.0
+- ESLint 10.x
+- TypeScript (required peer dependency)
+- `tsconfig.json` file in project root
 
 ## Installation
 
 ```bash
-npm install --save-dev @nitid/eslint-config-nitid eslint@^9.0.0
+npm install --save-dev @nitid/eslint-config-nitid eslint@^10.0.0 typescript
 ```
+
+### Optional: accessibility rules
+
+`eslint-plugin-jsx-a11y` is an **optional peer dependency**. It still works on
+ESLint 10, but its published peer range caps at ESLint 9 and it depends on a
+`minimatch` version with a known advisory. Because npm `overrides` declared by a
+package are ignored when that package is installed as a dependency, shipping it
+as a hard dependency would push an unfixable peer warning and audit finding onto
+every consumer.
+
+Install it yourself to enable a11y linting, adding the two overrides in your own
+`package.json` (where overrides _do_ apply):
+
+```bash
+npm install --save-dev eslint-plugin-jsx-a11y
+```
+
+```json
+{
+  "overrides": {
+    "eslint-plugin-jsx-a11y": { "eslint": "$eslint" },
+    "minimatch": "^10.2.6"
+  }
+}
+```
+
+Without it, the config loads normally and every non-a11y rule still runs.
 
 ## Usage
 
-ESLint 9 uses the flat config format. Create an `eslint.config.js` file in your project root:
+ESLint 10 uses the flat config format. Create an `eslint.config.js` file in your project root:
 
 ```js
 import nitidConfigFunction from '@nitid/eslint-config-nitid';
@@ -84,12 +112,12 @@ export default [
 
 - Self-contained rule set (no airbnb or other config dependencies)
 - Comprehensive TypeScript support with strict type checking rules
-- React and React Hooks support
-- JSX accessibility rules
+- React correctness rules via `@eslint-react`
+- React Hooks / React Compiler rules via `eslint-plugin-react-hooks` v7
+- Optional JSX accessibility rules
 - Separate configurations for JS/JSX and TS/TSX files
 - Modern JavaScript best practices
-- Complete set of import/export rules
-- Includes all rules from previous ESLint 8 configurations
+- Complete set of import/export rules via `eslint-plugin-import-x`
 - No default globals (projects define their own environment needs)
 - Prettier integration to avoid formatting conflicts
 
@@ -114,6 +142,30 @@ This config requires a `tsconfig.json` file in your project root for TypeScript 
 }
 ```
 
+## Migration from v4 (ESLint 9) to v5 (ESLint 10)
+
+v5 is a breaking change. ESLint 10 removed APIs that `eslint-plugin-react` and
+`eslint-plugin-import` still rely on, so both were replaced:
+
+| Removed                               | Replacement                   | Impact                                                           |
+| ------------------------------------- | ----------------------------- | ---------------------------------------------------------------- |
+| `eslint-plugin-react`                 | `@eslint-react/eslint-plugin` | 26 rules map across; 23 class-era/stylistic rules are gone       |
+| `eslint-plugin-import`                | `eslint-plugin-import-x`      | all rules keep their names but the prefix changes to `import-x/` |
+| `@babel/eslint-parser`                | ESLint's built-in espree      | no Babel config needed; drops `@babel/core`                      |
+| `eslint-plugin-jsx-a11y` (dependency) | optional peer dependency      | install it yourself to keep a11y rules                           |
+
+**Action required in consuming projects:**
+
+- Update inline suppressions: `eslint-disable ... import/x` becomes `import-x/x`,
+  and `react/x` comments referring to removed rules should be deleted.
+- Deprecated core formatting rules (`indent`, `quotes`, `semi`, `comma-dangle`,
+  and ~22 others) were removed from the config. They were already disabled by
+  `eslint-config-prettier`, so this is a no-op — Prettier owns formatting.
+- `no-return-await`, `global-require`, `no-new-symbol`,
+  `@typescript-eslint/no-var-requires` and `@typescript-eslint/semi` were removed
+  as deprecated. `no-new-symbol` and `no-var-requires` are covered by
+  `no-new-native-nonconstructor` and `no-require-imports`, which remain enabled.
+
 ## Migration from ESLint 8
 
 This config has been migrated from ESLint 8's `.eslintrc.js` format to ESLint 9's flat config format (`eslint.config.js`). Key changes:
@@ -127,4 +179,4 @@ This config has been migrated from ESLint 8's `.eslintrc.js` format to ESLint 9'
 - Minimal globals are provided by default
 - Prettier integration is included to avoid formatting conflicts
 
-If you need to use the old configuration format, set the environment variable `ESLINT_USE_FLAT_CONFIG=false`.
+The legacy `.eslintrc` format is not supported: ESLint 10 removed it entirely.

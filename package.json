@@ -1,33 +1,49 @@
 {
   "name": "@nitid/eslint-config-nitid",
-  "version": "4.3.1",
+  "version": "5.0.0",
   "description": "Shareable ESLint config used by Nitid Bit",
   "main": "eslint.config.js",
   "type": "module",
   "files": [
     "eslint.config.js"
   ],
+  "engines": {
+    "node": ">=22.0.0"
+  },
   "publishConfig": {
     "access": "public"
   },
   "peerDependencies": {
-    "eslint": "^9.33.0"
+    "eslint": "^10.0.0",
+    "eslint-plugin-jsx-a11y": "^6.10.2",
+    "typescript": ">=4.8.4 <6.1.0"
+  },
+  "peerDependenciesMeta": {
+    "eslint-plugin-jsx-a11y": {
+      "optional": true
+    }
   },
   "dependencies": {
-    "@babel/eslint-parser": "^7.28",
-    "@eslint/js": "^9.30",
-    "@typescript-eslint/eslint-plugin": "^8.35",
-    "@typescript-eslint/parser": "^8.35",
-    "eslint-config-prettier": "^10.1",
-    "eslint-import-resolver-typescript": "^4.4",
-    "eslint-plugin-import": "^2.32",
-    "eslint-plugin-jsx-a11y": "^6.10",
-    "eslint-plugin-react": "^7.37",
-    "eslint-plugin-react-hooks": "^5.2"
+    "@eslint-react/eslint-plugin": "^5.18.1",
+    "@eslint/js": "^10.0.1",
+    "@typescript-eslint/eslint-plugin": "^8.65.0",
+    "@typescript-eslint/parser": "^8.65.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-import-resolver-typescript": "^4.4.5",
+    "eslint-plugin-import-x": "^4.17.1",
+    "eslint-plugin-react-hooks": "^7.1.1"
   },
   "devDependencies": {
-    "eslint": "^9.33.0",
-    "prettier": "^3.6.2",
-    "react": "^19.1.0"
+    "eslint": "^10.0.0",
+    "eslint-plugin-jsx-a11y": "^6.10.2",
+    "prettier": "^3.9.6",
+    "react": "^19.1.0",
+    "typescript": "^5.9.3"
+  },
+  "overrides": {
+    "eslint-plugin-jsx-a11y": {
+      "eslint": "$eslint"
+    },
+    "minimatch": "^10.2.6"
   }
 }

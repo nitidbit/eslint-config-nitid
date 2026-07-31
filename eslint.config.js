@@ -2,19 +2,28 @@
 // Use dynamic imports for better compatibility as a shareable config
 export default async function createConfig() {
   // Dynamically import dependencies
-  const jsParser = await import('@babel/eslint-parser')
-  // eslint-disable-next-line import/no-unresolved
   const tsParser = await import('@typescript-eslint/parser')
-  // eslint-disable-next-line import/no-unresolved
   const typescriptPlugin = await import('@typescript-eslint/eslint-plugin')
-  const reactPlugin = await import('eslint-plugin-react')
-  const importPlugin = await import('eslint-plugin-import')
-  const jsxA11yPlugin = await import('eslint-plugin-jsx-a11y')
+  const reactPlugin = await import('@eslint-react/eslint-plugin')
+  const importPlugin = await import('eslint-plugin-import-x')
+  const tsResolver = await import('eslint-import-resolver-typescript')
   const hooksPlugin = await import('eslint-plugin-react-hooks')
   const js = await import('@eslint/js')
   const prettierConfig = await import('eslint-config-prettier')
   const fs = await import('fs')
   const path = await import('path')
+
+  // eslint-plugin-jsx-a11y is an optional peer dependency. Its published peer
+  // range still caps at ESLint 9 and it pulls a vulnerable minimatch, so it is
+  // NOT a hard dependency: npm `overrides` declared here would be ignored in
+  // consumer installs. Consumers who want a11y linting install it themselves
+  // (see README), where their own overrides do apply.
+  let jsxA11yPlugin = null
+  try {
+    jsxA11yPlugin = await import('eslint-plugin-jsx-a11y')
+  } catch {
+    jsxA11yPlugin = null
+  }
 
   // Base language options without globals - projects should define their own environments
   const baseLanguageOptions = {
@@ -34,19 +43,8 @@ export default async function createConfig() {
     // Possible Problems
     'array-callback-return': 'error',
     'arrow-body-style': 'off',
-    'arrow-parens': 'error',
     'block-scoped-var': 'error',
     camelcase: 'off',
-    'comma-dangle': [
-      'error',
-      {
-        arrays: 'always-multiline',
-        objects: 'always-multiline',
-        imports: 'always-multiline',
-        exports: 'always-multiline',
-        functions: 'only-multiline',
-      },
-    ],
     complexity: ['warn', { variant: 'modified', max: 24 }],
     'consistent-return': 'error',
     'constructor-super': 'error',
@@ -57,7 +55,6 @@ export default async function createConfig() {
     'for-direction': 'error',
     'func-names': ['error', 'as-needed'],
     'getter-return': 'error',
-    'global-require': 'error',
     'max-classes-per-file': ['error', 1],
     'no-alert': 'error',
     'no-async-promise-executor': 'error',
@@ -87,7 +84,6 @@ export default async function createConfig() {
     'no-ex-assign': 'error',
     'no-extra-bind': 'error',
     'no-fallthrough': 'error',
-    'no-floating-decimal': 'error',
     'no-func-assign': 'error',
     'no-implicit-coercion': ['error', { allow: ['!!'] }],
     'no-implied-eval': 'error',
@@ -99,13 +95,13 @@ export default async function createConfig() {
     'no-loop-func': 'error',
     'no-loss-of-precision': 'error',
     'no-misleading-character-class': 'error',
-    'no-multi-spaces': 'error',
     'no-multi-str': 'error',
     'no-nested-ternary': 'error',
     'no-new': 'error',
     'no-new-func': 'error',
+    // 'no-new-symbol' removed: deprecated, superseded by
+    // 'no-new-native-nonconstructor' above.
     'no-new-native-nonconstructor': 'error',
-    'no-new-symbol': 'error',
     'no-new-wrappers': 'error',
     'no-obj-calls': 'error',
     'no-octal': 'error',
@@ -134,7 +130,6 @@ export default async function createConfig() {
     'no-redeclare': 'error',
     'no-restricted-syntax': ['off', 'ForOfStatement'],
     'no-return-assign': ['error', 'always'],
-    'no-return-await': 'error',
     'no-script-url': 'error',
     'no-self-assign': 'error',
     'no-self-compare': 'error',
@@ -146,7 +141,6 @@ export default async function createConfig() {
     'no-this-before-super': 'error',
     'no-unassigned-vars': 'error',
     'no-throw-literal': 'error',
-    'no-trailing-spaces': 'error',
     'no-undef': 'error',
     'no-underscore-dangle': 'off',
     'no-unexpected-multiline': 'error',
@@ -184,142 +178,105 @@ export default async function createConfig() {
     'require-await': 'error',
     'use-isnan': 'error',
     'valid-typeof': 'error',
-    'wrap-iife': ['error', 'outside', { functionPrototypeMethods: false }],
     yoda: 'error',
 
-    // Layout & Formatting
-    'array-bracket-spacing': ['error', 'never'],
-    'comma-spacing': ['error', { before: false, after: true }],
-    'eol-last': ['error', 'always'],
-    indent: [
-      'error',
-      2,
-      { SwitchCase: 1, VariableDeclarator: 1, outerIIFEBody: 1 },
-    ],
-    'jsx-quotes': 'warn',
-    'key-spacing': ['error', { beforeColon: false, afterColon: true }],
-    'keyword-spacing': ['error', { before: true, after: true }],
-    'linebreak-style': ['error', 'unix'],
-    'no-multiple-empty-lines': ['error', { max: 1, maxBOF: 0, maxEOF: 0 }],
-    'no-tabs': 'error',
-    'object-curly-spacing': ['error', 'always'],
-    'padded-blocks': ['error', 'never'],
-    quotes: ['error', 'single', { avoidEscape: true }],
-    semi: 'off',
-    'semi-spacing': ['error', { before: false, after: true }],
-    'space-before-blocks': 'error',
-    'space-before-function-paren': [
-      'error',
-      { anonymous: 'always', named: 'never', asyncArrow: 'always' },
-    ],
-    'space-in-parens': ['error', 'never'],
-    'space-infix-ops': 'error',
-    'space-unary-ops': ['error', { words: true, nonwords: false }],
+    // Layout & Formatting rules are intentionally absent: they are deprecated
+    // in ESLint 10 and were already disabled by eslint-config-prettier, which
+    // is applied last. Prettier owns formatting.
 
     // Import rules
-    'import/default': 'error',
-    'import/export': 'error',
-    'import/extensions': 'off',
-    'import/first': 'error',
-    'import/named': 'error',
-    'import/newline-after-import': 'error',
-    'import/no-absolute-path': 'error',
-    'import/no-amd': 'error',
-    'import/no-commonjs': 'off',
-    'import/no-cycle': ['error', { maxDepth: Infinity }],
-    'import/no-duplicates': 'error',
-    'import/no-dynamic-require': 'error',
-    'import/no-extraneous-dependencies': [
+    'import-x/default': 'error',
+    'import-x/export': 'error',
+    'import-x/extensions': 'off',
+    'import-x/first': 'error',
+    'import-x/named': 'error',
+    'import-x/newline-after-import': 'error',
+    'import-x/no-absolute-path': 'error',
+    'import-x/no-amd': 'error',
+    'import-x/no-commonjs': 'off',
+    'import-x/no-cycle': ['error', { maxDepth: Infinity }],
+    'import-x/no-duplicates': 'error',
+    'import-x/no-dynamic-require': 'error',
+    'import-x/no-extraneous-dependencies': [
       'error',
       { optionalDependencies: false },
     ],
-    'import/no-mutable-exports': 'error',
-    'import/no-named-as-default': 'error',
-    'import/no-named-as-default-member': 'error',
-    'import/no-named-default': 'error',
-    'import/no-relative-packages': 'error',
-    'import/no-relative-parent-imports': 'off',
-    'import/no-restricted-paths': 'off',
-    'import/no-self-import': 'error',
-    'import/no-unresolved': 'error',
-    'import/no-useless-path-segments': 'error',
-    'import/no-webpack-loader-syntax': 'error',
-    'import/order': [
+    'import-x/no-mutable-exports': 'error',
+    'import-x/no-named-as-default': 'error',
+    'import-x/no-named-as-default-member': 'error',
+    'import-x/no-named-default': 'error',
+    'import-x/no-relative-packages': 'error',
+    'import-x/no-relative-parent-imports': 'off',
+    'import-x/no-restricted-paths': 'off',
+    'import-x/no-self-import': 'error',
+    'import-x/no-unresolved': 'error',
+    'import-x/no-useless-path-segments': 'error',
+    'import-x/no-webpack-loader-syntax': 'error',
+    'import-x/order': [
       'error',
       { groups: [['builtin', 'external', 'internal']] },
     ],
-    'import/prefer-default-export': 'off',
+    'import-x/prefer-default-export': 'off',
 
-    // React
+    // React (eslint-plugin-react-hooks v7 — the React Compiler lint)
     'react-hooks/exhaustive-deps': 'off',
     'react-hooks/rules-of-hooks': 'error',
 
-    'react/button-has-type': 'error',
-    'react/default-props-match-prop-types': [
-      'error',
-      { allowRequiredDefaults: false },
-    ],
-    'react/destructuring-assignment': 'off',
-    'react/display-name': 'warn',
-    'react/forbid-prop-types': 'warn',
-    'react/function-component-definition': [
-      'error',
-      { namedComponents: 'arrow-function' },
-    ],
-    'react/jsx-curly-spacing': 'error',
-    'react/jsx-filename-extension': ['error', { extensions: ['.jsx', '.tsx'] }],
-    'react/jsx-fragments': ['error', 'syntax'],
-    'react/jsx-key': 'error',
-    'react/jsx-no-bind': ['warn', { allowArrowFunctions: true }],
-    'react/jsx-no-comment-textnodes': 'error',
-    'react/jsx-no-duplicate-props': 'error',
-    'react/jsx-no-script-url': 'error',
-    'react/jsx-no-target-blank': 'error',
-    'react/jsx-no-undef': 'error',
-    'react/jsx-no-useless-fragment': 'error',
-    'react/jsx-pascal-case': ['error', { allowAllCaps: true }],
-    'react/jsx-props-no-spread-multi': 'error',
-    'react/jsx-props-no-spreading': 'off',
-    'react/jsx-tag-spacing': ['error', { beforeSelfClosing: 'always' }],
-    // 'react/jsx-uses-react' and 'react/react-in-jsx-scope' are intentionally
-    // omitted: configs.flat['jsx-runtime'] disables them for the automatic JSX
-    // transform (React 17+). Setting them here would override that, because
-    // these baseRules are applied in later config objects.
-    'react/jsx-uses-vars': 'error',
-    'react/no-access-state-in-setstate': 'error',
-    'react/no-array-index-key': 'error',
-    'react/no-arrow-function-lifecycle': 'error',
-    'react/no-children-prop': 'error',
-    'react/no-danger': 'warn',
-    'react/no-danger-with-children': 'error',
-    'react/no-deprecated': 'error',
-    'react/no-did-mount-set-state': 'error',
-    'react/no-did-update-set-state': 'error',
-    'react/no-direct-mutation-state': 'error',
-    'react/no-find-dom-node': 'error',
-    'react/no-invalid-html-attribute': 'error',
-    'react/no-is-mounted': 'error',
-    'react/no-render-return-value': 'error',
-    'react/no-string-refs': 'error',
-    'react/no-this-in-sfc': 'error',
-    'react/no-typos': 'error',
-    'react/no-unescaped-entities': 'error',
-    'react/no-unknown-property': 'error',
-    'react/no-unsafe': 'error',
-    'react/no-unstable-nested-components': ['warn', { allowAsProps: true }],
-    'react/no-unused-prop-types': 'error',
-    'react/no-unused-state': 'error',
-    'react/no-will-update-set-state': 'error',
-    'react/prefer-es6-class': ['error', 'always'],
-    'react/prefer-exact-props': 'error',
-    'react/prefer-stateless-function': 'error',
-    'react/prop-types': 'off',
-    'react/require-render-return': 'error',
-    'react/self-closing-comp': 'warn',
-    'react/sort-comp': 'error',
-    'react/state-in-constructor': ['error', 'always'],
-    'react/style-prop-object': 'error',
-    'react/void-dom-elements-no-children': 'error',
+    // React correctness (@eslint-react). eslint-plugin-react is not usable on
+    // ESLint 10: it calls the removed context.getFilename() across many rules.
+    '@eslint-react/dom-no-missing-button-type': 'error',
+    '@eslint-react/dom-no-dangerously-set-innerhtml': 'warn',
+    '@eslint-react/dom-no-dangerously-set-innerhtml-with-children': 'error',
+    '@eslint-react/dom-no-find-dom-node': 'error',
+    '@eslint-react/dom-no-render-return-value': 'error',
+    '@eslint-react/dom-no-script-url': 'error',
+    '@eslint-react/dom-no-string-style-prop': 'error',
+    '@eslint-react/dom-no-unknown-property': 'error',
+    '@eslint-react/dom-no-unsafe-target-blank': 'error',
+    '@eslint-react/dom-no-void-elements-with-children': 'error',
+    '@eslint-react/jsx-no-children-prop': 'error',
+    '@eslint-react/jsx-no-comment-textnodes': 'error',
+    '@eslint-react/jsx-no-key-after-spread': 'error',
+    '@eslint-react/jsx-no-useless-fragment': 'error',
+    '@eslint-react/no-access-state-in-setstate': 'error',
+    '@eslint-react/no-array-index-key': 'error',
+    '@eslint-react/no-direct-mutation-state': 'error',
+    '@eslint-react/no-duplicate-key': 'error',
+    '@eslint-react/no-missing-component-display-name': 'warn',
+    '@eslint-react/no-missing-key': 'error',
+    '@eslint-react/no-nested-component-definitions': 'warn',
+    '@eslint-react/no-unused-state': 'error',
+    // Replaces react/no-deprecated
+    '@eslint-react/no-component-will-mount': 'error',
+    '@eslint-react/no-component-will-receive-props': 'error',
+    '@eslint-react/no-component-will-update': 'error',
+    '@eslint-react/no-context-provider': 'error',
+    '@eslint-react/no-create-ref': 'error',
+    '@eslint-react/no-forward-ref': 'error',
+    '@eslint-react/no-use-context': 'error',
+    // Replaces react/no-unsafe
+    '@eslint-react/no-unsafe-component-will-mount': 'error',
+    '@eslint-react/no-unsafe-component-will-receive-props': 'error',
+    '@eslint-react/no-unsafe-component-will-update': 'error',
+    // Replaces react/no-did-mount-set-state and friends
+    '@eslint-react/no-set-state-in-component-did-mount': 'error',
+    '@eslint-react/no-set-state-in-component-did-update': 'error',
+    '@eslint-react/no-set-state-in-component-will-update': 'error',
+
+    // @eslint-react ships rules that duplicate eslint-plugin-react-hooks v7.
+    // Meta's plugin is authoritative, so silence the duplicates.
+    '@eslint-react/error-boundaries': 'off',
+    '@eslint-react/exhaustive-deps': 'off',
+    '@eslint-react/globals': 'off',
+    '@eslint-react/immutability': 'off',
+    '@eslint-react/purity': 'off',
+    '@eslint-react/refs': 'off',
+    '@eslint-react/rules-of-hooks': 'off',
+    '@eslint-react/set-state-in-effect': 'off',
+    '@eslint-react/set-state-in-render': 'off',
+    '@eslint-react/static-components': 'off',
+    '@eslint-react/unsupported-syntax': 'off',
+    '@eslint-react/use-memo': 'off',
   }
 
   // TypeScript-specific rules
@@ -383,18 +340,17 @@ export default async function createConfig() {
       'error',
       { functions: false, classes: true, variables: false, typedefs: false },
     ],
-    '@typescript-eslint/no-var-requires': 'error',
+    // 'no-var-requires' removed: deprecated in favour of 'no-require-imports'
+    // above. 'semi' removed: deleted from typescript-eslint v8 (Prettier's job).
     '@typescript-eslint/no-wrapper-object-types': 'error',
     '@typescript-eslint/prefer-as-const': 'error',
     '@typescript-eslint/prefer-namespace-keyword': 'error',
-    '@typescript-eslint/semi': 'off',
     '@typescript-eslint/triple-slash-reference': 'error',
     // Turn off base rules that are handled by TypeScript-specific rules
     'no-redeclare': 'off', // Use @typescript-eslint/no-redeclare instead
     'no-shadow': 'off',
     'no-unused-vars': 'off',
     'no-use-before-define': 'off',
-    'react/require-default-props': 'off', // TypeScript handles this
   }
 
   // Check for tsconfig.json before creating TypeScript config
@@ -422,10 +378,12 @@ export default async function createConfig() {
   }
 
   return [
-    jsxA11yPlugin.default.flatConfigs.recommended,
-    reactPlugin.default.configs.flat.recommended,
-    reactPlugin.default.configs.flat['jsx-runtime'],
-    hooksPlugin.configs['recommended-latest'],
+    // Only present when the optional peer dependency is installed.
+    ...(jsxA11yPlugin ? [jsxA11yPlugin.default.flatConfigs.recommended] : []),
+    reactPlugin.default.configs.recommended,
+    // v7 moved the flat config under .flat; configs['recommended-latest'] is
+    // now the legacy eslintrc shape, which ESLint 10 rejects outright.
+    hooksPlugin.default.configs.flat['recommended-latest'],
 
     // Ignore patterns
     {
@@ -439,13 +397,14 @@ export default async function createConfig() {
     {
       files: ['**/*.js', '**/*.jsx'],
       plugins: {
-        import: importPlugin.default,
+        'import-x': importPlugin.default,
       },
+      // No parser override: ESLint's built-in espree resolves JSX identifiers
+      // in scope analysis, so react/jsx-uses-vars is unnecessary and
+      // @babel/eslint-parser (which does not) is no longer needed.
       languageOptions: {
         ...baseLanguageOptions,
-        parser: jsParser.default,
         parserOptions: {
-          requireConfigFile: false,
           ecmaFeatures: {
             jsx: true,
           },
@@ -455,14 +414,11 @@ export default async function createConfig() {
         ...baseRules,
       },
       settings: {
-        'import/resolver': {
-          node: {
-            extensions: ['.js', '.jsx', '.ts', '.tsx'],
-          },
-        },
-        react: {
-          version: 'detect',
-        },
+        'import-x/resolver-next': [
+          importPlugin.default.createNodeResolver({
+            extensions: ['.js', '.jsx', '.ts', '.tsx', '.mjs', '.cjs', '.json'],
+          }),
+        ],
       },
     },
 
@@ -471,8 +427,7 @@ export default async function createConfig() {
       files: ['**/*.ts', '**/*.tsx'],
       plugins: {
         '@typescript-eslint': typescriptPlugin.default,
-        import: importPlugin.default,
-        react: reactPlugin.default,
+        'import-x': importPlugin.default,
       },
       languageOptions: {
         ...baseLanguageOptions,
@@ -486,17 +441,17 @@ export default async function createConfig() {
       rules: {
         ...baseRules,
         ...typescriptRules,
+        // Type-aware replacement for react/no-unused-prop-types. TS only: it
+        // throws on JS/JSX, where there are no parser services.
+        '@eslint-react/no-unused-props': 'error',
       },
       settings: {
-        'import/resolver': {
-          typescript: {},
-          node: {
-            extensions: ['.js', '.jsx', '.ts', '.tsx'],
-          },
-        },
-        react: {
-          version: 'detect',
-        },
+        'import-x/resolver-next': [
+          tsResolver.createTypeScriptImportResolver(),
+          importPlugin.default.createNodeResolver({
+            extensions: ['.js', '.jsx', '.ts', '.tsx', '.mjs', '.cjs', '.json'],
+          }),
+        ],
       },
     },
 
@@ -525,7 +480,7 @@ export default async function createConfig() {
       },
       rules: {
         'no-empty-function': 'off',
-        'import/no-named-as-default-member': 'off',
+        'import-x/no-named-as-default-member': 'off',
         'react-hooks/rules-of-hooks': 'off',
       },
     },
