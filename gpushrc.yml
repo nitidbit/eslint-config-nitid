@@ -9,3 +9,9 @@ parallel_run:
 
   - name: eslint
     shell: npx eslint --config test-config.js '**/*.{js,jsx,ts,tsx}'
+
+  - name: npm audit
+    shell: npm audit
+
+  - name: claude code review
+    shell: gpush claude-review
