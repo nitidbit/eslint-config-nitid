@@ -302,6 +302,12 @@ export default async function createConfig() {
         format: ['camelCase', 'PascalCase', 'UPPER_CASE'],
         trailingUnderscore: 'forbid',
       },
+      // A destructured name is the data's own key, often snake_case from a server
+      {
+        selector: 'variable',
+        modifiers: ['destructured'],
+        format: null,
+      },
       {
         selector: 'function',
         format: ['camelCase', 'PascalCase'],
